@@ -32,6 +32,7 @@ def index():
             prediction = "Crop" if result < 0.5 else "Weed"
 
     return render_template('index.html', prediction=prediction, image_path=image_path)
+    return 
 
 if __name__ == '__main__':
     app.run(debug=True)

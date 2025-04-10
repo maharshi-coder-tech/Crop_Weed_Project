@@ -34,7 +34,7 @@
   
     body {
       background-image: 
-        url("{{ url_for('static', filename='images/bg.jpeg') }}"),
+        url("{{ url_for('static', filename='images/bg14.png') }}"),
         linear-gradient(135deg, var(--bg-light), #c3f0ca);
       background-size: cover;
       background-repeat: no-repeat;
@@ -324,29 +324,29 @@
     const preview = document.getElementById("preview");
     const resultCard = document.getElementById("resultCard");
     const loader = document.getElementById("loader");
-
+  
     function updateClock() {
       const now = new Date();
       document.getElementById('clock').innerHTML = now.toLocaleTimeString();
     }
-
+  
     function toggleTheme() {
       document.body.classList.toggle("dark-mode");
       themeBtn.innerHTML = document.body.classList.contains("dark-mode") ? "🌞" : "🌚";
     }
-
+  
     setInterval(updateClock, 1000);
     updateClock();
-
+  
     dropArea.addEventListener("dragover", (e) => {
       e.preventDefault();
       dropArea.style.backgroundColor = "#e8fbe8";
     });
-
+  
     dropArea.addEventListener("dragleave", () => {
       dropArea.style.backgroundColor = "";
     });
-
+  
     dropArea.addEventListener("drop", (e) => {
       e.preventDefault();
       dropArea.style.backgroundColor = "";
@@ -355,7 +355,7 @@
       fileElem.files = files;
       handleFiles(files);
     });
-
+  
     function handleFiles(files) {
       if (files.length > 0) {
         const file = files[0];
@@ -368,44 +368,86 @@
         reader.readAsDataURL(file);
       }
     }
-
+  
+    function hasGreenOrYellow(imageData) {
+      const data = imageData.data;
+      let greenCount = 0;
+      let yellowCount = 0;
+  
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+  
+        if (g > 100 && r < 100 && b < 100) greenCount++; // Green
+        else if (r > 150 && g > 150 && b < 100) yellowCount++; // Yellow
+      }
+  
+      const total = imageData.width * imageData.height;
+      const ratio = (greenCount + yellowCount) / total;
+      return ratio > 0.05; // 5% green or yellow pixels
+    }
+  
     function predict() {
-      if (preview.src) {
-        loader.style.display = "block";
-        resultCard.style.display = "none";
-
-        setTimeout(() => {
-          loader.style.display = "none";
-          const prediction = Math.random() < 0.5 ? "🌾 This is a Crop" : "🌿 This is a Weed";
-          const confidence = Math.floor(80 + Math.random() * 20);
-          resultCard.innerHTML = `🧠 Prediction: <strong>${prediction}</strong><br>Confidence: <strong>${confidence}%</strong>`;
-          resultCard.style.display = "block";
-        }, 1500);
-      } else {
+      if (!preview.src) {
         resultCard.innerHTML = "⚠ Please upload an image first!";
         resultCard.style.display = "block";
+        return;
       }
+  
+      loader.style.display = "block";
+      resultCard.style.display = "none";
+  
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  
+        loader.style.display = "none";
+  
+        if (!hasGreenOrYellow(imageData)) {
+          resultCard.innerHTML = "⚠ Invalid Image";
+          resultCard.style.display = "block";
+          return;
+        }
+  
+        const prediction = Math.random() < 0.5 ? "🌾 This is a Crop" : "🌿 This is a Weed";
+        const confidence = Math.floor(80 + Math.random() * 20);
+        resultCard.innerHTML = `🧠 Prediction: <strong>${prediction}</strong><br>Confidence: <strong>${confidence}%</strong>`;
+        resultCard.style.display = "block";
+      };
+  
+      img.src = preview.src;
     }
-
+  
     function sendMessage() {
       const input = document.getElementById('userInput');
       const chatBody = document.getElementById('chatBody');
       const msg = input.value.trim().toLowerCase();
       if (!msg) return;
-
+  
       chatBody.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
-
+  
       let reply = "Sorry, I don't understand that.";
       if (msg.includes("hello")) reply = "Hi! I'm AgriBot. How can I help you?";
       else if (msg.includes("what is a weed")) reply = "A weed is an unwanted plant that competes with crops.";
-      else if (msg.includes("how to identify a weed")) reply = "Use our image upload tool to classify between crops and weeds!";
+      else if (msg.includes("how to identify a weed")) reply = "To identify a weed, focus on its leaf shape, margin, venation, stem structure, flower characteristics, and overall growth habit, as well as its life cycle and reproductive methods.";
       else if (msg.includes("tips")) reply = "Check out the tips section on the page for farming advice!";
       else if (msg.includes("bye")) reply = "Goodbye! Happy farming!";
-
+  
       chatBody.innerHTML += `<div><strong>AgriBot:</strong> ${reply}</div>`;
       input.value = "";
       chatBody.scrollTop = chatBody.scrollHeight;
     }
+  </script>
+  
+</body>
+</html>
   </script>
 </body>
 </html>
