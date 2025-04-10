@@ -1,0 +1,223 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body Styling */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e6f4ea;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    animation: backgroundFade 6s ease-in-out infinite alternate;
+  }
+  
+  /* Clock Styling (Top Right Corner) */
+  .clock {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    font-size: 1.6rem;
+    background-color: #ffffffcc;
+    padding: 12px 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+    color: #2e7d32;
+    font-weight: 600;
+    font-family: 'Courier New', Courier, monospace;
+    z-index: 10;
+    animation: slideInClock 1.2s ease-out forwards, glowPulse 2.5s ease-in-out infinite;
+  }
+  
+  /* Main Container */
+  .container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    animation: fadeZoomIn 1.5s ease-out;
+  }
+  
+  /* Header */
+  h1 {
+    font-size: 2.4rem;
+    margin-bottom: 25px;
+    color: #333;
+    animation: fadeSlideDown 1s ease-in;
+  }
+  
+  h1::before {
+    content: "🌱 ";
+  }
+  
+  /* Upload Box */
+  .upload-box {
+    border: 2px dashed #4caf50;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f5fff7;
+    margin-bottom: 25px;
+    cursor: pointer;
+    color: #555;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+  }
+  
+  .upload-box:hover {
+    transform: scale(1.05);
+    animation: bounce 0.5s ease;
+  }
+  
+  /* Analyze Button */
+  button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+  }
+  
+  button:hover {
+    background-color: #388e3c;
+    transform: scale(1.1);
+  }
+  
+  /* Prediction Result */
+  .prediction {
+    font-size: 1.4rem;
+    color: #2e7d32;
+    font-weight: 600;
+    margin-bottom: 25px;
+    opacity: 0;
+    animation: fadeInUp 1.5s ease forwards;
+    animation-delay: 1.5s;
+  }
+  
+  .prediction::before {
+    content: "🧠 ";
+  }
+  
+  /* Footer Note */
+  .footer {
+    font-size: 0.9rem;
+    color: #888;
+    animation: fadeIn 2s ease-in;
+  }
+  
+  .footer span {
+    color: #4caf50;
+    font-weight: bold;
+  }
+  
+  .footer a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  /* Keyframes */
+  @keyframes slideInClock {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes glowPulse {
+    0% {
+      box-shadow: 0 0 10px #4caf50;
+    }
+    50% {
+      box-shadow: 0 0 20px #81c784;
+    }
+    100% {
+      box-shadow: 0 0 10px #4caf50;
+    }
+  }
+  
+  @keyframes fadeZoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes backgroundFade {
+    0% {
+      background-color: #e6f4ea;
+    }
+    100% {
+      background-color: #d0f0da;
+    }
+  }
+  
